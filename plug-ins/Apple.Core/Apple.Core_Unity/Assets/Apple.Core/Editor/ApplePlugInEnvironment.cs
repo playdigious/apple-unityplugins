@@ -1,4 +1,4 @@
-#if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX || UNITY_VISIONOS))
+#if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX))
 using System;
 using System.IO;
 using System.Linq;
@@ -24,17 +24,15 @@ namespace Apple.Core
         public static string iOS => "iOS";
         public static string macOS => "macOS";
         public static string tvOS => "tvOS";
-        public static string visionOS => "visionOS";
         public static string iPhoneSimulator => "iPhoneSimulator";
         public static string AppleTVSimulator => "AppleTVSimulator";
-        public static string VisionSimulator => "VisionSimulator";
         public static string Unknown => "Unknown";
 
         public static string[] ValidPlatforms { get; private set; }
 
         static ApplePlatformID()
         {
-            ValidPlatforms = new string[] {ApplePlatformID.iOS, ApplePlatformID.macOS, ApplePlatformID.tvOS, ApplePlatformID.iPhoneSimulator, ApplePlatformID.AppleTVSimulator, ApplePlatformID.visionOS, ApplePlatformID.VisionSimulator};
+            ValidPlatforms = new string[] {ApplePlatformID.iOS, ApplePlatformID.macOS, ApplePlatformID.tvOS, ApplePlatformID.iPhoneSimulator, ApplePlatformID.AppleTVSimulator};
         } 
     }
 
@@ -315,14 +313,6 @@ namespace Apple.Core
                         default: return ApplePlatformID.Unknown;
                     }
 
-                case BuildTarget.VisionOS:
-                    switch (PlayerSettings.VisionOS.sdkVersion)
-                    {
-                        case VisionOSSdkVersion.Device: return ApplePlatformID.visionOS;
-                        case VisionOSSdkVersion.Simulator: return ApplePlatformID.VisionSimulator;
-                        default: return ApplePlatformID.Unknown;
-                    }
-
                 case BuildTarget.StandaloneOSX: return ApplePlatformID.macOS;
 
                 default: return ApplePlatformID.Unknown;
@@ -347,11 +337,6 @@ namespace Apple.Core
             if (applePlatformId == ApplePlatformID.tvOS || applePlatformId == ApplePlatformID.AppleTVSimulator)
             {
                 return BuildTarget.tvOS;
-            }
-
-            if (applePlatformId == ApplePlatformID.visionOS || applePlatformId == ApplePlatformID.VisionSimulator)
-            {
-                return BuildTarget.VisionOS;
             }
 
             if (applePlatformId == ApplePlatformID.macOS)
@@ -552,7 +537,7 @@ namespace Apple.Core
         /// <remarks>
         /// When building Xcode projects for macOS, Unity puts everything but the project under an additional folder "/{Application.productName}" - this script will respect this folder hierarchy.
         /// Output paths will of the following form:
-        ///   iOS/tvOS/visionOS: <c>[XCODE_PROJECT_DIR]/ApplePluginLibraries/[PLUGIN_NAME]/ApplePluginLibrary.suffix</c>
+        ///   iOS/tvOS:   <c>[XCODE_PROJECT_DIR]/ApplePluginLibraries/[PLUGIN_NAME]/ApplePluginLibrary.suffix</c>
         ///               macOS: <c>[XCODE_PROJECT_DIR]/[Application.productName]/ApplePluginLibraries/[PLUGIN_NAME]/ApplePluginLibrary.suffix</c>
         /// </remarks>
         /// <param name="unityBuildTarget">Current Unity BuildTarget</param>
@@ -654,7 +639,7 @@ namespace Apple.Core
             // Destination paths are different depending upon the following scenarios:
             //  1. Building a Mac app directly: [OUTPUT_APP_PATH]/Contents/PlugIns
             //  2. Build an Xcode project which targets macOS: [XCODE_PROJECT_DIR]/[Application.productName]/ApplePluginLibraries/[PLUGIN_NAME]/
-            //  3. Build an Xcode project which targets iOS/tvOS/visionOS: [XCODE_PROJECT_DIR]/ApplePluginLibraries/[PLUGIN_NAME]/
+            //  3. Build an Xcode project which targets iOS/tvOS: [XCODE_PROJECT_DIR]/ApplePluginLibraries/[PLUGIN_NAME]/
             //
             // In the first (1.) case, no linking is necessary. Each library .bundle must be copied to the correct location in the containing .app bundle
             //  The path used in this case corresponds to the Xcode build setting PLUGINS_FOLDER_PATH
@@ -761,4 +746,4 @@ namespace Apple.Core
         }
     }
 }
-#endif // #if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX || UNITY_VISIONOS))
+#endif // #if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX))

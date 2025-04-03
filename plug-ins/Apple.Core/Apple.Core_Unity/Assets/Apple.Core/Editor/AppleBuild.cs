@@ -1,4 +1,4 @@
-#if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX || UNITY_VISIONOS))
+#if (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX))
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -81,10 +81,6 @@ namespace Apple.Core
 
                     case BuildTarget.StandaloneOSX:
                         minOSVersionString = appleBuildProfile.MinimumOSVersion_macOS;
-                        break;
-
-                    case BuildTarget.VisionOS:
-                        minOSVersionString = appleBuildProfile.MinimumOSVersion_visionOS;
                         break;
 
                     default:
@@ -322,8 +318,6 @@ namespace Apple.Core
                 case BuildTarget.iOS:
                 case BuildTarget.tvOS:
                     return $"{pathToBuiltProject}/Unity-iPhone.xcodeproj/project.pbxproj";
-                case BuildTarget.VisionOS:
-                    return $"{pathToBuiltProject}/Unity-VisionOS.xcodeproj/project.pbxproj";
                 case BuildTarget.StandaloneOSX:
 #if UNITY_2020_1_OR_NEWER
                     return $"{pathToBuiltProject}/{new DirectoryInfo(pathToBuiltProject).Name}.xcodeproj/project.pbxproj";
@@ -487,4 +481,4 @@ namespace Apple.Core
         }
     }
 }
-#endif // (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX || UNITY_VISIONOS))
+#endif // (UNITY_EDITOR_OSX && (UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX))
